@@ -1,9 +1,20 @@
 import React, { useState } from "react";
+import { useQuery } from "react-query";
 import Modaltext from "../../../Shared/Modaltext";
 import ProgrammeTable from "../../../Shared/ProgrammeTable";
 
 const Programme = () => {
     const [open, setOpen] = useState(false);
+    const district = ["Dhaka", "Borishal", "Gazipur"];
+    const { data, isLoading, refetch } = useQuery(["all"], () =>
+        fetch("http://localhost:5000/allProgramme").then((res) => res.json())
+    );
+    if (data) {
+        console.log(data);
+    }
+    if (isLoading) {
+        return;
+    }
     return (
         <div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-4">
@@ -20,10 +31,22 @@ const Programme = () => {
                     Bill Making
                 </button>
             </div>
+            {/* filtering */}
+            <section>
+                <select name="district" className="w-fit px-4 py-0">
+                    {district.map((d, index) => (
+                        <option key={index} value={d}>
+                            {d}
+                        </option>
+                    ))}
+                </select>
+            </section>
             <div>
-                <ProgrammeTable />
+                <ProgrammeTable data={data} />
             </div>
-            {open && <Modaltext open={open} setOpen={setOpen} />}
+            {open && (
+                <Modaltext open={open} setOpen={setOpen} refetch={refetch} />
+            )}
         </div>
     );
 };

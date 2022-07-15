@@ -2,7 +2,7 @@ import { Button, Modal, TextInput } from "flowbite-react";
 import React from "react";
 import Swal from "sweetalert2";
 //01851987463
-const Modaltext = ({ open, setOpen }) => {
+const Modaltext = ({ open, setOpen, refetch }) => {
     const handleNewProgramme = (e) => {
         e.preventDefault();
         const destination = e.target.destination.value;
@@ -21,6 +21,7 @@ const Modaltext = ({ open, setOpen }) => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.acknowledged) {
+                    refetch();
                     Swal.fire({
                         position: "center",
                         icon: "success",
