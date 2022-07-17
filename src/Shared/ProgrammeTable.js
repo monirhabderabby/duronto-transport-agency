@@ -1,5 +1,6 @@
 import { Table } from "flowbite-react";
 import React from "react";
+import { Link } from "react-router-dom";
 
 let ProgrammeTable = ({ data }) => {
     return (
@@ -25,12 +26,12 @@ let ProgrammeTable = ({ data }) => {
                                 <Table.Cell>{d.district}</Table.Cell>
                                 <Table.Cell>{d.contact}</Table.Cell>
                                 <Table.Cell>
-                                    <a
-                                        href="/tables"
+                                    <Link
                                         className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                                        to="/programmeEdit"
                                     >
                                         Edit
-                                    </a>
+                                    </Link>
                                 </Table.Cell>
                             </Table.Row>
                         </>

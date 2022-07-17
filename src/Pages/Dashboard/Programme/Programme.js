@@ -5,18 +5,28 @@ import ProgrammeTable from "../../../Shared/ProgrammeTable";
 
 const Programme = () => {
     const [open, setOpen] = useState(false);
-    const district = ["Dhaka", "Borishal", "Gazipur"];
-    const { data, isLoading, refetch } = useQuery(["all"], () =>
-        fetch("http://localhost:5000/allProgramme").then((res) => res.json())
+    const [district, setDistrict] = useState("");
+    const districtList = ["সব", "ঢাকা", "ডেমরা", "গাজীপুর"];
+    const handleDistricSelection = (e) => {
+        setDistrict(e.target.value);
+        console.log(e.target.value);
+    };
+
+    const { data, isLoading, refetch } = useQuery(["all", district], () =>
+        fetch(`http://localhost:5000/allProgramme?district=${district}`).then(
+            (res) => res.json()
+        )
     );
-    if (data) {
-        console.log(data);
-    }
+    // const { data, isLoading, refetch } = useQuery(["all", district], () =>
+    //     fetch(`http://localhost:5000/allProgramme?district=${district}`).then(
+    //         (res) => res.json()
+    //     )
+    // );
     if (isLoading) {
         return;
     }
     return (
-        <div>
+        <div className="px-12">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-4">
                 <button
                     className="p-2 my-2 bg-green-400 mx-2 rounded-md text-white hover:bg-green-500"
@@ -32,9 +42,13 @@ const Programme = () => {
                 </button>
             </div>
             {/* filtering */}
-            <section>
-                <select name="district" className="w-fit px-4 py-0">
-                    {district.map((d, index) => (
+            <section className="text-left p-6">
+                <select
+                    name="district"
+                    onChange={handleDistricSelection}
+                    className="w-fit px-4 py-0"
+                >
+                    {districtList?.map((d, index) => (
                         <option key={index} value={d}>
                             {d}
                         </option>
